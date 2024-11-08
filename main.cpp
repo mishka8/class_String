@@ -91,7 +91,7 @@ class String
             {
 //                throw out_of_range("index out of range");
                 cout << "index out of range" << endl;
-                exit(0);
+                exit(-1);
 
             }
             else
