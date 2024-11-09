@@ -1,6 +1,7 @@
 #include <iostream>
 #include <exception>
 #include <vector>
+#define buffer 1000
 #define size_tab 256
 
 using namespace std;
@@ -40,7 +41,7 @@ class String
         String(String &str)
         {
             len = str.len;
-            pStr = new char[len];
+            pStr = new char[len + 1];
             for(int i = 0; i != len; ++i)
             {
                 pStr[i] = str.pStr[i];
@@ -62,7 +63,7 @@ class String
             {
                 delete []pStr;
             }
-
+            
             pStr = nullptr;// это ключевое слово, используемое для явного указания на отсутствие значения или нулевого указателя
         }
 
@@ -73,6 +74,11 @@ class String
 
         String & operator = (const String &str)
         {
+            if(this == &str)
+            {
+                return *this;
+            }
+            
             delete []pStr;
             len = str.len;
             pStr = new char[len + 1];
@@ -81,13 +87,13 @@ class String
             {
                 pStr[i] = str.pStr[i];
             }
-            pStr[len + 1] = '\0';
+            pStr[len] = '\0';
             return *this;
         }
 
         char &operator [](int i)
         {
-            if(i >= len)
+            if(i < 0 || i >= len)
             {
 //                throw out_of_range("index out of range");
                 cout << "index out of range" << endl;
@@ -117,15 +123,15 @@ class String
         bool operator != (String &str)
         {
             if(len != str.len)
-                return false;
+                return true;
 
             for(int i = 0; i != len; ++i)
             {
-                if(pStr[i] == str.pStr[i])
-                    return false;
+                if(pStr[i] != str.pStr[i])
+                    return true;
             }
 
-            return true;
+            return false;
         }
 
         String operator + (const String &str)
@@ -148,7 +154,8 @@ class String
 
         String & operator += (const String &str)
         {
-            char *pStrTmp = new char [len + str.len];
+            char *pStrTmp = new char [len + str.len + 1];
+            
             for(int  i = 0; i != len; ++i)
             {
                 pStrTmp[i] = pStr[i];
@@ -161,20 +168,31 @@ class String
             delete [] pStr;
             pStr = pStrTmp;
             len = len + str.len;
-
+            pStrTmp[len] = '\0';
+            
             return *this;
         }
 
         friend istream & operator >> (istream &in, String &str)
         {
-            in >> str.pStr;
+            char *pStrTmp[buffer];
+            in >> pStrTmp;
             int size = 0;
-            for(int i = 0; str.pStr[i] != '\0'; ++i)
+            for(int i = 0; pStrTmp[i] != '\0'; ++i)
             {
                 ++size;
             }
-
+            
+            delete []str.pStr;
+            
+            str.pStr = new char[size + 1];
             str.len = size;
+            str.pStr[len] = '\0';
+            for(int i = 0; str.pStr[i] != '\0'; ++i)
+            {
+                str.pStr[i] = pStrTmp[i];
+            }
+            
             return in;
         }
 
@@ -182,8 +200,6 @@ class String
         {
             return out << str.pStr;
         }
-
-        int BMSearch(String &prototype);
 
         String operator() (int i, int j)
         {
@@ -220,6 +236,8 @@ class String
 
             return res;
         }
+        
+        int BMSearch(String &prototype);
 
 };
 
@@ -267,6 +285,7 @@ int String:: BMSearch(String &prototype)
 
 int main()
 {
+    String s1;
 
     String s1("hello, how_are_you?");
     String s2(3);
@@ -279,7 +298,9 @@ int main()
     String s4("how are too you?");
 
     String s5(0);
-
+    
+    
+    
     s5 = s4.firstEntry(s3);
     cout << s4 << endl;
     cout << "prototype - " << s3 << endl;
