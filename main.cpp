@@ -290,16 +290,18 @@ int String:: BMSearch(String &prototype)
 
 int main()
 {
-    String s("AAAABABAA");
-    // A A A A B A B A A
-    // 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
-    String pattern("BABA");
-    // B A B A
-    // 1 2 1 2
-    int position = s.BMSearch(pattern);
-    if (position != -1) {
-        cout << "Found at index: " << position << endl;
-    } else {
-        cout << "Not found" << endl;
-    }
+    String s1;
+
+    String s1("hello, how_are_you?");
+    String s2(3);
+    String s4("how are too you?");
+
+    String s5(0);
+    
+    s5 = s4.firstEntry(s3);
+    cout << s4 << endl;
+    cout << "prototype - " << s3 << endl;
+    cout << "res - " << s5;
+
+    return 0;
 }
