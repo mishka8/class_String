@@ -257,10 +257,7 @@ int String:: BMSearch(String &prototype)
 
     for(int i = 0; i < size_tab; TAB[i] = len_pr, ++i);//таблица смещений
 
-    for(int i = 0; i < len_pr - 1; TAB[prototype[i]] = len_pr - i - 1, ++i){
-        cout << TAB[prototype[i]];
-    }
-    cout << TAB[prototype[len_pr - 1]];
+    for(int i = 0; i < len_pr - 1; TAB[prototype[i]] = len_pr - i - 1, ++i);
     //prototype[i] = a -> (int)prototype[i] = 97 -> TAB[97] = len_pr - i - 1;
 
     int i = len_pr - 1;//позиция в pStr с которой сравниваем
