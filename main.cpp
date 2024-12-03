@@ -290,16 +290,13 @@ int String:: BMSearch(String &prototype)
 
 int main()
 {
-    String s1;
-
-    String s1("hello, how_are_you?");
-    String s2(3);
     String s4("how are too you?");
+    String s3("too");
 
     String s5(0);
-    
+
     s5 = s4.firstEntry(s3);
-    cout << s4 << endl;
+    cout << "string - " << s4 << endl;
     cout << "prototype - " << s3 << endl;
     cout << "res - " << s5;
 
