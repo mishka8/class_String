@@ -173,28 +173,31 @@ class String
             return *this;
         }
 
+
+
         friend istream & operator >> (istream &in, String &str)
-        {
-            char *pStrTmp[buffer];
-            in >> pStrTmp;
-            int size = 0;
-            for(int i = 0; pStrTmp[i] != '\0'; ++i)
-            {
-                ++size;
-            }
-            
-            delete []str.pStr;
-            
-            str.pStr = new char[size + 1];
-            str.len = size;
-            str.pStr[len] = '\0';
-            for(int i = 0; str.pStr[i] != '\0'; ++i)
-            {
-                str.pStr[i] = pStrTmp[i];
-            }
-            
-            return in;
-        }
+    {
+    char pStrTmp[buffer];  // Исправлено на правильный тип
+    in >> pStrTmp;
+    int size = 0;
+    while(pStrTmp[size] != '\0')  // Исправлено на правильную проверку конца строки
+    {
+        ++size;
+    }
+    
+    delete []str.pStr;
+    
+    str.pStr = new char[size + 1];
+    str.len = size;
+    str.pStr[size] = '\0';  // Исправлено на size
+    for(int i = 0; i != size; ++i)  // Исправлено на правильную копию
+    {
+        str.pStr[i] = pStrTmp[i];
+    }
+    
+    return in;
+    }
+
 
         friend ostream & operator << (ostream &out, String &str)
         {
@@ -254,7 +257,11 @@ int String:: BMSearch(String &prototype)
 
     for(int i = 0; i < size_tab; TAB[i] = len_pr, ++i);//таблица смещений
 
-    for(int i = 0; i < len_pr - 1; TAB[prototype[i]] = len_pr - i - 1, ++i);//prototype[i] = a -> (int)prototype[i] = 97 -> TAB[97] = len_pr - i - 1;
+    for(int i = 0; i < len_pr - 1; TAB[prototype[i]] = len_pr - i - 1, ++i){
+        cout << TAB[prototype[i]];
+    }
+    cout << TAB[prototype[len_pr - 1]];
+    //prototype[i] = a -> (int)prototype[i] = 97 -> TAB[97] = len_pr - i - 1;
 
     int i = len_pr - 1;//позиция в pStr с которой сравниваем
     int j = i;//позиция в шаблоне
@@ -266,9 +273,13 @@ int String:: BMSearch(String &prototype)
         k = i;
         while(j >= 0 && pStr[k] == prototype[j])//сравниваем шаблон и строку справа налево
         {
+            //cout <<  pStr[k] << " | " << prototype[j] << " " << k << " | " << j << " "; 
             k--;
             j--;
         }
+        //cout << TAB[pStr[i]] << endl;
+        //cout << i << " " << TAB[pStr[i]] << endl;
+        
         i += TAB[pStr[i]];//смещяемся по строке если несовпали
     }
     if(k >= lenS - len_pr)
@@ -285,29 +296,16 @@ int String:: BMSearch(String &prototype)
 
 int main()
 {
-    String s1;
-
-    String s1("hello, how_are_you?");
-    String s2(3);
-    s2 = s1( 7, 10);
-    cout << endl << s1 << endl;
-    cout << s2 << endl << endl << endl;
-
-
-    String s3("too ");
-    String s4("how are too you?");
-
-    String s5(0);
-    
-    
-    
-    s5 = s4.firstEntry(s3);
-    cout << s4 << endl;
-    cout << "prototype - " << s3 << endl;
-    cout << "res - " << s5;
-
-
-
-
-    return 0;
+    String s("AAAABABAA");
+    // A A A A B A B A A
+    // 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+    String pattern("BABA");
+    // B A B A
+    // 1 2 1 2
+    int position = s.BMSearch(pattern);
+    if (position != -1) {
+        cout << "Found at index: " << position << endl;
+    } else {
+        cout << "Not found" << endl;
+    }
 }
