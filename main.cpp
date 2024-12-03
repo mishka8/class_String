@@ -270,12 +270,9 @@ int String:: BMSearch(String &prototype)
         k = i;
         while(j >= 0 && pStr[k] == prototype[j])//сравниваем шаблон и строку справа налево
         {
-            //cout <<  pStr[k] << " | " << prototype[j] << " " << k << " | " << j << " "; 
             k--;
             j--;
         }
-        //cout << TAB[pStr[i]] << endl;
-        //cout << i << " " << TAB[pStr[i]] << endl;
         
         i += TAB[pStr[i]];//смещяемся по строке если несовпали
     }
